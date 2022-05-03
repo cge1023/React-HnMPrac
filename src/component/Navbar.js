@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const Navbar = ({authenticate}) => {
+const Navbar = ({ authenticate }) => {
+  // const [val, setVal] = useState();
+
   const menulist = [
     "Women",
     "Divided",
@@ -19,12 +22,21 @@ const Navbar = ({authenticate}) => {
   const navigate = useNavigate();
 
   const goToLogin = () => {
-    navigate('/login');
-  }
+    navigate("/login");
+  };
 
   const goToHome = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
+
+  const search = (event) => {
+    if (event.key === "Enter") {
+      // 입력한 검색어를 읽어와서
+      let keyword = event.target.value;
+      // url을 바꿔준다.
+      console.log("key press", event.key);
+    }
+  };
 
   return (
     <>
@@ -49,7 +61,11 @@ const Navbar = ({authenticate}) => {
 
         <div className="search-box">
           <FontAwesomeIcon icon={faSearch} />
-          <input type="text" placeholder="Search products"/>
+          <input
+            type="text"
+            placeholder="Search products"
+            onKeyPress={(event) => search(event)}
+          />
         </div>
       </div>
     </>
