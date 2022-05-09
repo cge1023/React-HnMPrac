@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown, Alert } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { productAction } from "../redux/actions/productAction";
 
 const ProductDetail = () => {
   let { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product.selectedItem);
 
   const getProductDetail = async () => {
-    let url = `https://my-json-server.typicode.com/cge1023/React-HnMPrac/products/${id}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    console.log(data);
-    setProduct(data);
+    dispatch(productAction.getProductDetail(id));
   };
 
   useEffect(() => {
@@ -27,15 +26,17 @@ const ProductDetail = () => {
         <Col>
           <div className="product-info">{product?.title}</div>
           <div className="product-info">₩{product?.price}</div>
-          <div className="choice">{product?.choice === true ? "Conscious Choice" : ""}</div>
+          <div className="choice">
+            {product?.choice === true ? "Conscious Choice" : ""}
+          </div>
           <Dropdown className="drop-down">
             <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
               Select Size
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              {product?.size.length > 0 &&
-                product.size.map((item) => (
+              {product?.size?.length > 0 &&
+                product?.size.map((item) => (
                   <Dropdown.Item href="#/action-1">{item}</Dropdown.Item>
                 ))}
             </Dropdown.Menu>
